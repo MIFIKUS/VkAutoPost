@@ -8,7 +8,7 @@ class Login:
         self.vk = self._session.get_api()
 
     def _get_token(self):
-        with open('service_files\\vk.json') as vk_cnf:
+        with open('service_files/vk.json') as vk_cnf:
             return json.load(vk_cnf).get('TOKEN')
 
     def get_vk(self):

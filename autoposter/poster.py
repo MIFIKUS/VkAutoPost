@@ -8,7 +8,7 @@ class MakePost:
     def make_post(self, id, text):
         upload = vk_api.upload.VkUpload(self._session)
 
-        photo = ['tg_bot\\post\\post_photo.jpg']
+        photo = ['tg_bot/post/post_photo.jpg']
 
         photo_list = upload.photo_wall(photo)
         attachment = ','.join('photo{owner_id}_{id}'.format(**item) for item in photo_list)

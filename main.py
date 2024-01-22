@@ -42,7 +42,7 @@ make_post = MakePost(vk, vk_session)
 def _create_post_text(msg):
     log.log("Попытка создать текст поста")
     msg.text = msg.text.replace('/create_text', '')
-    with open('tg_bot\\post\\post_text.txt', 'w+', encoding='utf-8') as post_text:
+    with open('tg_bot/post/post_text.txt', 'w+', encoding='utf-8') as post_text:
         post_text.write(msg.text)
     log.success("Текст поста создан")
 
@@ -51,7 +51,7 @@ def _create_post_photo(msg):
     fileID = msg.photo[-1].file_id
     file_info = bot.get_file(fileID)
     downloaded_file = bot.download_file(file_info.file_path)
-    with open("tg_bot\\post\\post_photo.jpg", 'wb') as post_photo:
+    with open("tg_bot/post/post_photo.jpg", 'wb') as post_photo:
         post_photo.write(downloaded_file)
     log.success("Удалось получить фото поста")
 
@@ -70,7 +70,7 @@ def _set_receivers(msg):
         else:
             log.warning('Пустая строка')
 
-    with open('tg_bot\\post\\receivers.txt', 'w+', encoding='utf-8') as receivers:
+    with open('tg_bot/post/receivers.txt', 'w+', encoding='utf-8') as receivers:
         receivers.write(text)
     log.success("ID ссылок записаны")
 
@@ -99,15 +99,19 @@ def set_vk_token(message):
 
     log.log(f'Полученный токен от вк в сообщении {message}')
 
-    with open('service_files\\vk.json',  encoding='utf-8') as vk_cnf:
+    with open('service_files/vk.json',  encoding='utf-8') as vk_cnf:
         old_cnf = json.load(vk_cnf)
 
     old_cnf['TOKEN'] = message
 
     new_cnf = old_cnf
 
-    with open('service_files\\vk.json','w' , encoding='utf-8') as vk_cnf:
+    with open('service_files/vk.json','w' , encoding='utf-8') as vk_cnf:
         json.dump(new_cnf, vk_cnf)
+
+    login = Login()
+    vk = login.get_vk()
+    vk_session = login.get_session()
 
     log.success(f"Новый токен установлен {new_cnf}")
 
@@ -122,7 +126,7 @@ def set_timeout(message):
 
     log.log(f"Полученный таймаут в сообщении {timeout}")
 
-    with open('service_files\\timeout.txt', 'w', encoding='utf-8') as timeout_cnf:
+    with open('service_files/timeout.txt', 'w', encoding='utf-8') as timeout_cnf:
         timeout_cnf.write(timeout)
 
     log.success("Удалось записать таймаут в файл")
@@ -130,17 +134,17 @@ def set_timeout(message):
 
 def start_auto_poster():
     log.log("Запущен автопостер")
-    with open('service_files\\timeout.txt', encoding='utf=8') as timeout_cnf:
+    with open('service_files/timeout.txt', encoding='utf=8') as timeout_cnf:
         timeout_cnf = int(timeout_cnf.read())
         log.log(f"Получен таймаут {timeout_cnf}")
 
-    with open('tg_bot\\post\\receivers.txt', encoding='utf=8') as receivers_list:
+    with open('tg_bot/post/receivers.txt', encoding='utf=8') as receivers_list:
         receivers = receivers_list.read().split('\n')
         log.success("Получен список получателей")
         for a in receivers:
             log.log(f"ID получателя{a}")
 
-    with open('tg_bot\\post\\post_text.txt', encoding='utf=8') as post_text:
+    with open('tg_bot/post/post_text.txt', encoding='utf=8') as post_text:
         text = post_text.read()
         log.success("Получен текст поста")
 
