@@ -12,10 +12,10 @@ import telebot
 log = Logs()
 
 def _get_token():
-    with open('\\service_files\\tg.json') as tg_cnf:
+    with open('service_files\\tg.json') as tg_cnf:
         return json.load(tg_cnf).get('API_KEY')
 def _get_admin_id():
-    with open('\\service_files\\tg.json') as tg_cnf:
+    with open('service_files\\tg.json') as tg_cnf:
         return json.load(tg_cnf).get('ADMIN_ID')
 
 log.log('Бот запущен')
