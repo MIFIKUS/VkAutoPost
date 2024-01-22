@@ -163,6 +163,9 @@ def start_auto_poster():
 @bot.message_handler(content_types=['text'])
 def make_post_text(message):
     print('make_post')
+    print(message.text)
+    print(message)
+
     if message.text == 'Изменить шаблон поста':
         bot.send_message(_admin_id, 'Напишите текст поста перед этим написав /create_text')
     if message.text == 'Задать список получателей':
@@ -174,8 +177,8 @@ def make_post_text(message):
     if message.text == 'Старт':
         bot.send_message(_admin_id, 'Бот запущен. По окончанию работы вы получите сообщение')
         start_auto_poster()
-        bot.send_message(_admin_id, 'Все посты отправлены'
-                                    '')
+        bot.send_message(_admin_id, 'Все посты отправлены')
+
 @bot.message_handler(content_types=['photo'])
 def make_post_photo(message):
     log.log('Получено фото')
