@@ -1,7 +1,7 @@
 import time
 
 from autoposter.auth import Login
-from autoposter.poster import MakePost
+from autoposter.poster import MakePost, Subscribe
 from logger.logs import Logs
 from tg_bot import buttons
 from autoposter.get_id import get_id_by_link
@@ -34,10 +34,13 @@ try:
 except:
     log.error('Не удалось залогиниться в вк')
 
+
 vk = login.get_vk()
 
 vk_session = login.get_session()
 make_post = MakePost(vk, vk_session)
+
+subscribe = Subscribe(vk, vk_session)
 
 def _create_post_text(msg):
     log.log("Попытка создать текст поста")
@@ -160,6 +163,30 @@ def start_auto_poster():
 
         time.sleep(timeout_cnf)
 
+def start_subscribe():
+    log.log("Запущены подписки")
+    with open('service_files/timeout.txt', encoding='utf=8') as timeout_cnf:
+        timeout_cnf = int(timeout_cnf.read())
+        log.log(f"Получен таймаут {timeout_cnf}")
+
+    with open('tg_bot/post/receivers.txt', encoding='utf=8') as receivers_list:
+        receivers = receivers_list.read().split('\n')
+        log.success("Получен список получателей")
+        for a in receivers:
+            log.log(f"ID получателя{a}")
+
+    for i in receivers:
+        if len(i) == 0:
+            continue
+        try:
+            log.log(f"Попытка подисаться на группу с ID {i}")
+            subscribe.subscribe(int(i))
+            log.success(f'Удалось подписаться')
+        except:
+            log.error('Не удалось подписаться')
+
+        time.sleep(timeout_cnf)
+
 @bot.message_handler(content_types=['text'])
 def make_post_text(message):
     print('make_post')
@@ -178,6 +205,10 @@ def make_post_text(message):
         bot.send_message(_admin_id, 'Бот запущен. По окончанию работы вы получите сообщение')
         start_auto_poster()
         bot.send_message(_admin_id, 'Все посты отправлены')
+    if message.text == 'Подписаться':
+        bot.send_message(_admin_id, 'Начался процесс подписки на группы. В конце подписок вы получите сообщение')
+        start_subscribe()
+        bot.send_message(_admin_id, 'Процесс подписок завершен')
 
 @bot.message_handler(content_types=['photo'])
 def make_post_photo(message):

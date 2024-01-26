@@ -15,3 +15,10 @@ class MakePost:
         self._vk.wall.post(owner_id=id, message=text, attachments=attachment)
 
 
+class Subscribe:
+    def __init__(self, vk, session):
+        self._vk = vk
+        self._session = session
+
+    def subscribe(self, id):
+        self._vk.groups.join(group_id=abs(id))

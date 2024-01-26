@@ -1,14 +1,8 @@
-from autoposter.auth import Login
-from autoposter.poster import MakePost
-from autoposter.get_id import get_id_by_link
-from logger.logs import Logs
 
 import vk_api
 
-login = Login()
+vk_seesion = vk_api.VkApi(token="vk1.a.DI7808s3lobJ2WnADruPt-5mF5IRXlNpNBgBFQNwfOw3tW-E0b19uefX557rA5MDpN4ehfFz9Q4mskMcjuonYSzr0sUpnWNEywaI0dB5TKWsRDNGhIZobyHpkXJKa7ZEDf8ySAK1vT_QhV5iMrbN-FN6hQntiXYrULznW8tIbliwtipw_GD1_xusI8tPVRFrlFwhpxc69JcZzeaZ0Bk5OQ")
 
-vk = login.get_vk()
-sesion = login.get_session()
-v
+vk = vk_seesion.get_api()
 
-get_id_by_link(sesion, 'https://vk.com/animescale')
+vk.groups.join(group_id=183352712)
